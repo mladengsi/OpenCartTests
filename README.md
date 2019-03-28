@@ -13,7 +13,6 @@ The project contains 5 automated tests from admin profile page:
 
 5) Open support forum from profile dropdown
 
-
 Made by Mladen Varbev
 
 .NET Framework 4.6.1
