@@ -41,9 +41,7 @@ namespace OpenCartTestMladenVarbev
         {
             var logoutButton = driver.FindElement(By.XPath("//*[@id='header']/div/ul/li[2]/a/span"));
             logoutButton.Click();
-
-            Thread.Sleep(1000); ;
-
+            
             var logoutPanelTitle = driver.FindElement(By.XPath("//*[@id='content']/div/div/div/div/div[1]/h1"));
 
             Assert.AreEqual("Please enter your login details.", logoutPanelTitle.Text);
@@ -54,16 +52,10 @@ namespace OpenCartTestMladenVarbev
         public void Test03DeclineNameChange()
         {
             var profileDropdown = driver.FindElement(By.XPath("//*[@id='header']/div/ul/li[1]/a"));
-
-            profileDropdown.Click();
-
-            Thread.Sleep(1000);
+            profileDropdown.Click();            
 
             var profileSettings = driver.FindElement(By.XPath("//*[@id='header']/div/ul/li[1]/ul/li[1]/a"));
-
-            profileSettings.Click();
-
-            Thread.Sleep(1000);
+            profileSettings.Click();            
 
             var firstNameField = driver.FindElement(By.XPath("//*[@id='input-firstname']"));
             var lastNameField = driver.FindElement(By.XPath("//*[@id='input-lastname']"));
@@ -73,13 +65,9 @@ namespace OpenCartTestMladenVarbev
 
             lastNameField.Clear();
             lastNameField.SendKeys("Varbev");
-
-            Thread.Sleep(1000);
-
-            var saveChanges = driver.FindElement(By.XPath("//*[@id='content']/div[1]/div/div/button"));
-            saveChanges.Click();
-
-            Thread.Sleep(1000);
+            
+            var saveChangesButton = driver.FindElement(By.XPath("//*[@id='content']/div[1]/div/div/button"));
+            saveChangesButton.Click();
 
             var throwWarningMessage = driver.FindElement(By.XPath("//*[@id='content']/div[2]/div[1]"));
             var expectedMessage = @"Warning: You do not have permission to modify your profile!
@@ -94,22 +82,15 @@ namespace OpenCartTestMladenVarbev
         {
             var totalOrdersMenu = driver.FindElement(By.XPath("//*[@id='content']/div[2]/div[1]/div[1]/div/div[3]/a"));
             totalOrdersMenu.Click();
-
-            Thread.Sleep(1000);
-
+            
             var customerFilter = driver.FindElement(By.Id("input-customer"));
-
-            Thread.Sleep(1000);
-
+            
             customerFilter.Clear();
             customerFilter.SendKeys("Bob Smith");
 
             var filterButton = driver.FindElement(By.XPath("//*[@id='button-filter']/i"));
-
             filterButton.Click();
-
-            Thread.Sleep(3000);
-
+            
             var filteredCustomer = driver.FindElement(By.XPath("//*[@id='form-order']/table/tbody/tr[1]/td[3]"));
 
             Assert.AreEqual("Bob Smith", filteredCustomer.Text);
@@ -120,26 +101,16 @@ namespace OpenCartTestMladenVarbev
         public void Test05OpenSupportForum()
         {
             var profileDropDown = driver.FindElement(By.XPath("//*[@id='header']/div/ul/li[1]/a"));
-
             profileDropDown.Click();
-
-            Thread.Sleep(1000);
-
+            
             var supportForumRef = driver.FindElement(By.XPath("//*[@id='header']/div/ul/li[1]/ul/li[9]/a"));
-
             supportForumRef.Click();
-
-            Thread.Sleep(1000);
-
+            
             ReadOnlyCollection<string> windowHandles = driver.WindowHandles;
-
             string firstTab = windowHandles.First();
             string lastTab = windowHandles.Last();
-
             driver.SwitchTo().Window(lastTab);
-
-            Thread.Sleep(1000);
-
+            
             var forumBanner = driver.FindElement(By.XPath("//*[@id='forum']/div[1]/div/h1"));
             var expectedBanner = "Community Forum";
 
@@ -162,7 +133,7 @@ namespace OpenCartTestMladenVarbev
 
             loginButton.Click();
 
-            Thread.Sleep(2000);
+            Thread.Sleep(1000);
         }
     }
 }
@@ -172,13 +143,7 @@ namespace OpenCartTestMladenVarbev
 //public void Test00NavigateToDemoPage()
 //{
 //    driver.Navigate().GoToUrl(@"https://www.opencart.com");
-//
-//    Thread.Sleep(1000);
-//
 //    var viewDemoButton = driver.FindElement(By.XPath("//*[@id='hero']/div[1]/div[1]/div/p[2]/a[2]"));
-//
-//    Thread.Sleep(1000);
-//
 //    viewDemoButton.Click();
 //
 //    Thread.Sleep(1000);
