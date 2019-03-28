@@ -108,7 +108,7 @@ namespace OpenCartTestMladenVarbev
 
             filterButton.Click();
 
-            Thread.Sleep(1000);
+            Thread.Sleep(3000);
 
             var filteredCustomer = driver.FindElement(By.XPath("//*[@id='form-order']/table/tbody/tr[1]/td[3]"));
 
