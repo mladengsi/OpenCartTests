@@ -1,11 +1,9 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System.Threading;
 using System.Collections.ObjectModel;
 using System.Linq;
-using OpenQA.Selenium.Interactions;
 
 namespace OpenCartTestMladenVarbev
 {
@@ -19,6 +17,7 @@ namespace OpenCartTestMladenVarbev
         {
             driver = new ChromeDriver();
             driver.Manage().Window.Maximize();
+            LoginAsAdmin();
         }
 
         [TestCleanup]
@@ -29,68 +28,17 @@ namespace OpenCartTestMladenVarbev
 
         [TestCategory("AdminTests")]
         [TestMethod]
-        public void Test01NavigateToDemoPage()
+        public void Test01LoginAsAdmin()
         {
-            driver.Navigate().GoToUrl(@"https://www.opencart.com");
-
-            Thread.Sleep(1000);
-
-            var viewDemoButton = driver.FindElement(By.XPath("//*[@id='hero']/div[1]/div[1]/div/p[2]/a[2]"));
-
-            Thread.Sleep(1000);
-
-            viewDemoButton.Click();
-
-            Thread.Sleep(1000);
-            
-            var demoPageHeading = driver.FindElement(By.XPath("//*[@id='cms-demo']/div[1]/div/h1"));
-            var expectedPageHeadingText = "OpenCart Demonstration";
-           
-            Assert.AreEqual(expectedPageHeadingText, demoPageHeading.Text);
-        }
-        [TestCategory("AdminTests")]
-        [TestMethod]
-        public void Test02LoginAsAdmin()
-        {
-            driver.Navigate().GoToUrl(@"https://demo.opencart.com/admin/");
-            
-            var userName = driver.FindElement(By.Id("input-username"));        
-            var password = driver.FindElement(By.Id("input-password"));
-            var loginButton = driver.FindElement(By.CssSelector("button.btn"));
-
-            userName.Clear();
-            userName.SendKeys("demo");
-
-            password.Clear();
-            password.SendKeys("demo");
-
-            loginButton.Click();
-
-            Thread.Sleep(2000);
-
             var loggedUserName = driver.FindElement(By.XPath("//a[contains(text(),'demo demo ')]"));
 
             Assert.AreEqual("demo demo", loggedUserName.Text);
         }
+
         [TestCategory("AdminTests")]
         [TestMethod]
-        public void Test03LogoutAsAdmin()
+        public void Test02LogoutAsAdmin()
         {
-            driver.Navigate().GoToUrl(@"https://demo.opencart.com/admin/");
-
-            var userName = driver.FindElement(By.Id("input-username"));
-            var password = driver.FindElement(By.Id("input-password"));
-            var loginButton = driver.FindElement(By.CssSelector("button.btn"));
-
-            userName.Clear();
-            userName.SendKeys("demo");
-
-            password.Clear();
-            password.SendKeys("demo");
-
-            loginButton.Click();
-            Thread.Sleep(2000);
-
             var logoutButton = driver.FindElement(By.XPath("//*[@id='header']/div/ul/li[2]/a/span"));
             logoutButton.Click();
 
@@ -100,30 +48,15 @@ namespace OpenCartTestMladenVarbev
 
             Assert.AreEqual("Please enter your login details.", logoutPanelTitle.Text);
         }
+
         [TestCategory("AdminTests")]
         [TestMethod]
-        public void Test04DeclineNameChange()
+        public void Test03DeclineNameChange()
         {
-            driver.Navigate().GoToUrl(@"https://demo.opencart.com/admin/");
-
-            var userName = driver.FindElement(By.Id("input-username"));
-            var password = driver.FindElement(By.Id("input-password"));
-            var loginButton = driver.FindElement(By.CssSelector("button.btn"));
-
-            userName.Clear();
-            userName.SendKeys("demo");
-
-            password.Clear();
-            password.SendKeys("demo");
-
-            loginButton.Click();
-
-            Thread.Sleep(2000);
-
             var profileDropdown = driver.FindElement(By.XPath("//*[@id='header']/div/ul/li[1]/a"));
 
             profileDropdown.Click();
-                       
+
             Thread.Sleep(1000);
 
             var profileSettings = driver.FindElement(By.XPath("//*[@id='header']/div/ul/li[1]/ul/li[1]/a"));
@@ -153,29 +86,12 @@ namespace OpenCartTestMladenVarbev
 ×";
 
             Assert.AreEqual(expectedMessage, throwWarningMessage.Text);
-
         }
+
         [TestCategory("AdminTests")]
-
         [TestMethod]
-        public void Test05FilterOrdersByName()
+        public void Test04FilterOrdersByName()
         {
-            driver.Navigate().GoToUrl(@"https://demo.opencart.com/admin/");
-
-            var userName = driver.FindElement(By.Id("input-username"));
-            var password = driver.FindElement(By.Id("input-password"));
-            var loginButton = driver.FindElement(By.CssSelector("button.btn"));
-
-            userName.Clear();
-            userName.SendKeys("demo");
-
-            password.Clear();
-            password.SendKeys("demo");
-
-            loginButton.Click();
-
-            Thread.Sleep(1000);
-
             var totalOrdersMenu = driver.FindElement(By.XPath("//*[@id='content']/div[2]/div[1]/div[1]/div/div[3]/a"));
             totalOrdersMenu.Click();
 
@@ -198,25 +114,11 @@ namespace OpenCartTestMladenVarbev
 
             Assert.AreEqual("Bob Smith", filteredCustomer.Text);
         }
+
+        [TestCategory("AdminTests")]
         [TestMethod]
-        public void Test06SupportForum()
+        public void Test05OpenSupportForum()
         {
-            driver.Navigate().GoToUrl(@"https://demo.opencart.com/admin/");
-
-            var userName = driver.FindElement(By.Id("input-username"));
-            var password = driver.FindElement(By.Id("input-password"));
-            var loginButton = driver.FindElement(By.CssSelector("button.btn"));
-
-            userName.Clear();
-            userName.SendKeys("demo");
-
-            password.Clear();
-            password.SendKeys("demo");
-
-            loginButton.Click();
-
-            Thread.Sleep(2000);
-
             var profileDropDown = driver.FindElement(By.XPath("//*[@id='header']/div/ul/li[1]/a"));
 
             profileDropDown.Click();
@@ -243,5 +145,46 @@ namespace OpenCartTestMladenVarbev
 
             Assert.AreEqual(expectedBanner, forumBanner.Text);
         }
+
+        private void LoginAsAdmin()
+        {
+            driver.Navigate().GoToUrl(@"https://demo.opencart.com/admin/");
+
+            var userName = driver.FindElement(By.Id("input-username"));
+            var password = driver.FindElement(By.Id("input-password"));
+            var loginButton = driver.FindElement(By.CssSelector("button.btn"));
+
+            userName.Clear();
+            userName.SendKeys("demo");
+
+            password.Clear();
+            password.SendKeys("demo");
+
+            loginButton.Click();
+
+            Thread.Sleep(2000);
+        }
     }
 }
+
+//[TestCategory("OtherTests")]
+//[TestMethod]
+//public void Test00NavigateToDemoPage()
+//{
+//    driver.Navigate().GoToUrl(@"https://www.opencart.com");
+//
+//    Thread.Sleep(1000);
+//
+//    var viewDemoButton = driver.FindElement(By.XPath("//*[@id='hero']/div[1]/div[1]/div/p[2]/a[2]"));
+//
+//    Thread.Sleep(1000);
+//
+//    viewDemoButton.Click();
+//
+//    Thread.Sleep(1000);
+//
+//    var demoPageHeading = driver.FindElement(By.XPath("//*[@id='cms-demo']/div[1]/div/h1"));
+//    var expectedPageHeadingText = "OpenCart Demonstration";
+//
+//    Assert.AreEqual(expectedPageHeadingText, demoPageHeading.Text);
+//}
